@@ -50,7 +50,7 @@ const ValidUsers = (props) => {
   return (
     <div>
       {
-        !editUser && (
+        !editUser && !(showUsers && users.length > 0) && (
           <div className="view">
             <button onClick={fetchUsers} disabled={loading}>
               {loading ? "Loading..." : "View Users"}
