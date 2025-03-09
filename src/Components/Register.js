@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./Register.css";
 import moment from 'moment';
+import React, { useEffect, useState } from "react";
+import "./Register.css";
 
-const Register = () => {
-  const [user, setUser] = useState({
+const Register = (props) => {
+  let userData = {
+    _id: "",
     name: "",
     age: "",
     dob: "",
@@ -12,7 +13,13 @@ const Register = () => {
     cpswd: "",
     gender: "",
     about: "",
-  });
+  }
+  let isNewUser = true;
+  if (props && props.user) {
+    userData = props.user;
+    isNewUser = false;
+  }
+  const [user, setUser] = useState(userData);
 
   const [genders, setGenders] = useState([]);
   const [errors, setErrors] = useState({});
@@ -36,7 +43,7 @@ const Register = () => {
     else {
       setUser({ ...user, [name]: value });
       validateField(name, value);
-    } 
+    }
   };
 
 
@@ -89,30 +96,59 @@ const Register = () => {
     }
 
     if (!formValid) return;
+    if (isNewUser) {
+      try {
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/users/`, user).then(
+          (res) => alert("User registered successfully!"))
+          .catch((err) => {
+            if (err.response.status === 400) {
+              alert("User already exists!");
+            }
+          });
 
-    try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/users/`, user).then(
-        (res) => alert("User registered successfully!"))
-        .catch((err) => {
-          if (err.response.status === 400) {
-            alert("User already exists!");
-          }
+        // Reset form
+        setUser({
+          _id: "",
+          name: "",
+          age: "",
+          dob: "",
+          password: "",
+          cpswd: "",
+          gender: "",
+          about: "",
         });
-      alert("User registered successfully!");
+        setErrors({});
+      } catch (err) {
+        alert("Registration failed! Please contact administrator for more details");
+      }
+    } else {
+      try {
+        await axios.put(`${process.env.REACT_APP_API_URL}/api/users/${user._id}`, user).then(
+          (res) => alert("User updated successfully!"))
+          .catch((err) => {
+            if (err.response.status === 400) {
+              alert("User already exists!");
+            }
+          });
+        props.setShowUsers(false);
+        props.setEditUser(false);
 
-      // Reset form
-      setUser({
-        name: "",
-        age: "",
-        dob: "",
-        password: "",
-        cpswd: "",
-        gender: "",
-        about: "",
-      });
-      setErrors({});
-    } catch (err) {
-      alert("Registration failed! Please contact administrator for more details");
+        // Reset form
+        setUser({
+          _id: "",
+          name: "",
+          age: "",
+          dob: "",
+          password: "",
+          cpswd: "",
+          gender: "",
+          about: "",
+        });
+        setErrors({});
+      } catch (err) {
+        console.log(err);
+        alert("Updation failed! Please contact administrator for more details");
+      }
     }
   };
 
@@ -168,7 +204,12 @@ const Register = () => {
         </div>
         {errors.about && <span className="error">{errors.about}</span>}
 
-        <button type="submit">Register</button>
+
+        {isNewUser ? (
+          <button type="submit" name="register_button" value="Register">Register</button>
+        ) : (
+          <button type="submit" name="update_button" value="Update">Update</button>
+        )}
       </form>
     </div>
   );
