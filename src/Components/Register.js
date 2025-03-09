@@ -91,7 +91,13 @@ const Register = () => {
     if (!formValid) return;
 
     try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/users/`, user);
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/users/`, user).then(
+        (res) => alert("User registered successfully!"))
+        .catch((err) => {
+          if (err.response.status === 400) {
+            alert("User already exists!");
+          }
+        });
       alert("User registered successfully!");
 
       // Reset form
@@ -106,7 +112,7 @@ const Register = () => {
       });
       setErrors({});
     } catch (err) {
-      alert("Registration failed!");
+      alert("Registration failed! Please contact administrator for more details");
     }
   };
 
