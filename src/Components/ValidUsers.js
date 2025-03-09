@@ -1,12 +1,15 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 import "./ValidUsers.css";
+import Register from "./Register";
 
-const ValidUsers = () => {
+const ValidUsers = (props) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showUsers, setShowUsers] = useState(false);
+  const [editUser, setEditUser] = useState(false);
+  const [userForEdit, setUserForEdit] = useState(null);
 
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
@@ -16,6 +19,7 @@ const ValidUsers = () => {
     try {
       const response = await axios.get(`${API_URL}/api/users/`);
       setUsers(response.data);
+      props.setShowUsers(true);
       setShowUsers(true);
     } catch (error) {
       setError("Failed to fetch users. Please try again.");
@@ -27,26 +31,9 @@ const ValidUsers = () => {
   const handleEditUser = async (id) => {
     const userToEdit = users.find((user) => user._id === id);
     if (!userToEdit) return;
-
-    const editedName = prompt("Enter the new name:", userToEdit.name);
-    const editedAbout = prompt("Enter the new about:", userToEdit.about);
-
-    if (editedName && editedAbout) {
-      try {
-        await axios.put(`${API_URL}/api/users/${id}`, {
-          name: editedName,
-          about: editedAbout,
-        });
-
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user._id === id ? { ...user, name: editedName, about: editedAbout } : user
-          )
-        );
-      } catch (error) {
-        setError("Failed to update user. Please try again.");
-      }
-    }
+    setEditUser(true);
+    setShowUsers(false);
+    setUserForEdit(userToEdit);
   };
 
   const handleDeleteUser = async (id) => {
@@ -62,15 +49,18 @@ const ValidUsers = () => {
 
   return (
     <div>
-      <div className="view">
-        <button onClick={fetchUsers} disabled={loading}>
-          {loading ? "Loading..." : "View Users"}
-        </button>
-      </div>
+      {
+        !editUser && (
+          <div className="view">
+            <button onClick={fetchUsers} disabled={loading}>
+              {loading ? "Loading..." : "View Users"}
+            </button>
+          </div>)
+      }
 
       {error && <p className="error">{error}</p>}
 
-      {showUsers && users.length > 0 && (
+      {showUsers && users.length > 0 && !editUser && (
         <div className="table-container">
           <table border="1" cellPadding="5" cellSpacing="0">
             <thead>
@@ -95,6 +85,13 @@ const ValidUsers = () => {
           </table>
         </div>
       )}
+
+      {
+        editUser && (
+          <Register user={userForEdit} setShowUsers={props.setShowUsers}
+          setEditUser={setEditUser}/>
+        )
+      }
     </div>
   );
 };
