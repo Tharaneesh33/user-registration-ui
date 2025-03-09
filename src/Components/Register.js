@@ -5,7 +5,7 @@ import "./Register.css";
 
 const Register = (props) => {
   let userData = {
-    _id: "",
+    _id: undefined,
     name: "",
     age: "",
     dob: "",
@@ -109,7 +109,7 @@ const Register = (props) => {
 
         // Reset form
         setUser({
-          _id: "",
+          _id: undefined,
           name: "",
           age: "",
           dob: "",
@@ -137,7 +137,7 @@ const Register = (props) => {
 
         // Reset form
         setUser({
-          _id: "",
+          _id: undefined,
           name: "",
           age: "",
           dob: "",
