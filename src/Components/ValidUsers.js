@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
-import "./ValidUsers.css";
 import Register from "./Register";
+import "./ValidUsers.css";
 
 const ValidUsers = (props) => {
   const [users, setUsers] = useState([]);
@@ -50,13 +50,16 @@ const ValidUsers = (props) => {
   return (
     <div>
       {
-        !editUser && !(showUsers && users.length > 0) && (
+        !editUser && !(showUsers) && (
           <div className="view">
             <button onClick={fetchUsers} disabled={loading}>
               {loading ? "Loading..." : "View Users"}
             </button>
           </div>)
       }
+      {showUsers && users.length === 0 && (
+        <div><p>No users found.</p></div>)}
+
 
       {error && <p className="error">{error}</p>}
 
@@ -89,7 +92,7 @@ const ValidUsers = (props) => {
       {
         editUser && (
           <Register user={userForEdit} setShowUsers={props.setShowUsers}
-          setEditUser={setEditUser}/>
+            setEditUser={setEditUser} />
         )
       }
     </div>
