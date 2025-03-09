@@ -16,9 +16,10 @@ const Register = () => {
 
   const [genders, setGenders] = useState([]);
   const [errors, setErrors] = useState({});
+  const uri = process.env.API_URI;
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/users/genders")
+    axios.get(`${uri}/api/users/genders`)
       .then((res) => setGenders(res.data))
       .catch(() => setGenders(["Male", "Female", "Other"]));
   }, []);
@@ -90,7 +91,7 @@ const Register = () => {
     if (!formValid) return;
 
     try {
-      await axios.post("http://localhost:5000/api/users", user);
+      await axios.post(`${uri}/api/users/`, user);
       alert("User registered successfully!");
 
       // Reset form
