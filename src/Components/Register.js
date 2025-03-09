@@ -173,7 +173,7 @@ const Register = (props) => {
 
         <div className="input-container">
           <input type="number" name="age" placeholder="Age" value={user.age} onChange={handleChange} onBlur={handleBlur} required />
-          <span className="info-icon" title="Enter age between 0-120">ℹ</span>
+          <span className="info-icon" title="Accepted age range 0-120" disabled>ℹ</span>
         </div>
         {errors.age && <span className="error">{errors.age}</span>}
 
