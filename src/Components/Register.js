@@ -128,6 +128,7 @@ const Register = (props) => {
           (res) => alert("User updated successfully!"))
           .catch((err) => {
             if (err.response.status === 400) {
+              console.log(err);
               alert("User already exists!");
             }
           });
