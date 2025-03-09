@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import Register from "./Register";
+import moment from 'moment';
 import "./ValidUsers.css";
 
 const ValidUsers = (props) => {
@@ -69,17 +70,24 @@ const ValidUsers = (props) => {
             <thead>
               <tr>
                 <th>Username</th>
+                <th>DOB</th>
+                <th>Age</th>
                 <th>About</th>
-                <th>Actions</th>
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
                 <tr key={user._id}>
                   <td>{user.name}</td>
+                  <td>{moment(user.dob).format('YYYY-MM-DD')}</td>
+                  <td>{user.age}</td>
                   <td>{user.about}</td>
                   <td>
                     <button onClick={() => handleEditUser(user._id)}>Edit</button>
+                    </td>
+                    <td>
                     <button onClick={() => handleDeleteUser(user._id)}>Delete</button>
                   </td>
                 </tr>
