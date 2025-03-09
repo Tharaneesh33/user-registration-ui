@@ -155,11 +155,11 @@ const Register = (props) => {
 
   return (
     <div className="container">
-      <h2>User Registration</h2>
+      {isNewUser ? (<h2>User Registration</h2>) : (<h2>User Updation</h2>)}
       <form onSubmit={handleRegister}>
         <div className="input-container">
-          <input type="text" name="name" placeholder="Name" value={user.name} onChange={handleChange} onBlur={handleBlur} required />
-          <span className="info-icon" title="Name must contain atleast 2 characters">ℹ</span>
+        <input type="text" name="name" placeholder="User Name" value={user.name} onChange={handleChange} onBlur={handleBlur} required disabled={isNewUser? "" : "disabled"}/>
+          <span className="info-icon" title="Username can't be changed after registration. It must contain atleast 2 characters">ℹ</span>
         </div>
         {errors.name && <span className="error">{errors.name}</span>}
 
