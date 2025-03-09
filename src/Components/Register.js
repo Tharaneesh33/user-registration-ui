@@ -47,7 +47,7 @@ const Register = () => {
 
     if (name === "age") {
       if (!value) error = "Age is required";
-      else if (value < 1 || value > 120 || isNaN(value)) error = "Enter a valid age (0-120)";
+      else if (value < 0 || value > 120 || isNaN(value)) error = "Enter a valid age (0-120)";
     }
 
     if (name === "dob" && !value) error = "Date of Birth is required";
