@@ -17,6 +17,7 @@ const Register = (props) => {
   let isNewUser = true;
   if (props && props.user) {
     userData = props.user;
+    userData.dob=moment(userData.dob).format('YYYY-MM-DD');
     isNewUser = false;
   }
   const [user, setUser] = useState(userData);
