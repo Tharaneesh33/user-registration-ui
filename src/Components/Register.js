@@ -19,7 +19,7 @@ const Register = () => {
 
 
   useEffect(() => {
-    axios.get(`${process.env.API_URL}/api/users/genders`)
+    axios.get(`${process.env.REACT_APP_API_URL}/api/users/genders`)
       .then((res) => setGenders(res.data))
       .catch(() => setGenders(["Male", "Female", "Other"]));
   }, []);
@@ -52,7 +52,7 @@ const Register = () => {
 
     if (name === "dob" && !value) error = "Date of Birth is required";
 
-    if (name === "password" && !/^(?=.[A-Za-z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%*?&]{10,}$/.test(value)) {
+    if (name === "password" && !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%*?&]{10,}$/.test(value)) {
       error = "Enter valid password";
     }
 
@@ -91,7 +91,7 @@ const Register = () => {
     if (!formValid) return;
 
     try {
-      await axios.post(`${process.env.API_URL}/api/users/`, user);
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/users/`, user);
       alert("User registered successfully!");
 
       // Reset form
