@@ -1,14 +1,15 @@
 
 import './App.css';
-import React from "react";
+import React, { useState } from "react";
 import Register from "./Components/Register";
 import ValidUsers from "./Components/ValidUsers";
 
 function App() {
+  const [showUsers, setShowUsers] = useState(false);
   return (
     <div>
-      <Register />
-      <ValidUsers />
+      {(showUsers)? null : <Register setShowUsers={setShowUsers}/>}
+      <ValidUsers setShowUsers={setShowUsers}/>
     </div>
   );
   
